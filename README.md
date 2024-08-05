@@ -1,5 +1,5 @@
 # EyeOxide
-EyeOxide is equipped with a couple things to help perform OSINT investigations.
+A compilation of tools to help perform OSINT investigations.
 
 This was meant to be a successor to [BringEmNear](https://github.com/rootprt/BringEmNear), but it deserves its own title. Expect more functionality soon.
 
