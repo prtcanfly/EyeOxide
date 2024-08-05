@@ -13,7 +13,7 @@ cargo run
 ```
 
 ## Usage
-#### There is currently only a couple commands to choose from, they are as follows:
+#### The current commands are as follows:
 
 ##### Ip
 ```
