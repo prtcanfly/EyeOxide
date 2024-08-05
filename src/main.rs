@@ -23,6 +23,7 @@ const HASH_URL: &str = "https://api.snusbase.com/tools/hash-lookup";
 enum Commands {
     Ip,
     Snus,
+    User,
     Hash,
     Exit,
     Unknown,
@@ -38,6 +39,7 @@ impl FromStr for Commands {
         match input {
             "ip" => Ok(Commands::Ip),
             "snus" => Ok(Commands::Snus),
+            "user" => Ok(Commands::User),
             "hash" => Ok(Commands::Hash),
             "exit" => Ok(Commands::Exit),
             _ => Ok(Commands::Unknown),
@@ -52,6 +54,7 @@ impl Functions {
         match command {
             Commands::Ip => Commands::ip_info(),
             Commands::Snus => Commands::snusbase().unwrap_or_default(),
+            Commands::User => Commands::user_search().unwrap_or_default(),
             Commands::Hash => Commands::hash_lookup().unwrap_or_default(),
             Commands::Exit => exit(0),
             Commands::Unknown => println!(""),
@@ -69,15 +72,15 @@ impl Functions {
    
     // takes client, url, and body as input, prints a parsed json output, returns ()
     fn print_json(c: Client, u: &str, b: Value) -> Result<(), Box<dyn Error>>  {
-        let response = c.post(u)
+        let res = c.post(u)
             .header("Auth", SNUS_API)
             .header("Content-Type", "application/json")
             .json(&b)
             .send()?;
 
-        let response_text = response.text()?.trim().to_string();  
-        let json_value: Value = serde_json::from_str(&response_text)?;
-        let pretty_json = to_string_pretty(&json_value)?;
+        let res_txt = res.text()?.trim().to_string();  
+        let json_default: Value = serde_json::from_str(&res_txt)?;
+        let pretty_json = to_string_pretty(&json_default)?;
         
         println!("{}", pretty_json);
 
@@ -111,6 +114,38 @@ impl Commands {
             },
             Err(e) => println!("error occured: {}", &e.to_string()), 
         }
+    }
+    
+    // similar to sherlock, finds accounts using a username
+    fn user_search() -> Result<(), Box<dyn Error>> {
+        let client = Client::new();
+
+        println!("Username:");
+        let mut input = String::new();
+        let username = Functions::get_input(&mut input);
+        
+        let sites = vec![
+            format!("https://instagram.com/{}", username),
+            format!("https://github.com/{}", username),
+            format!("https://x.com/{}", username),
+            format!("https://reddit.com/u/{}", username),
+            format!("https://tiktok.com/@{}", username),           
+            format!("https://imgur.com/user/{}", username),
+            format!("https://facebook.com/{}", username),
+            format!("https://pinterest.com/{}", username),
+            format!("https://t.me/{}", username),
+            format!("https://www.tumblr.com/{}", username),
+        ];
+
+        for site in &sites {
+            let res = client
+                .get(site)
+                .send()?;
+            let res = res.status();
+            println!("[{}]: {}", res, site);
+        }
+
+        Ok(())
     }
 
     // cracks certain hashes you may find searching snusbase
