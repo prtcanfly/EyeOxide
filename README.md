@@ -1,7 +1,7 @@
 # EyeOxide
 A compilation of tools to help perform OSINT investigations.
 
-The fast and reliable successor to [BringEmNear](https://github.com/rootprt/BringEmNear). Python bad, Rust good 👍
+The fast and reliable successor to [BringEmNear](https://github.com/rootprt/BringEmNear). Looking to add more functionality over time.
 
 ## Installation
 Copy the repo and edit main.rs to enter your API keys. When finished, run the program with cargo.
