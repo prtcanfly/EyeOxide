@@ -1,7 +1,7 @@
 # EyeOxide
 EyeOxide is equipped with a couple things to help perform OSINT investigations.
 
-This was meant to be a successor to ![BringEmNear](https://github.com/rootprt/BringEmNear), but it deserves its own title...
+This was meant to be a successor to [BringEmNear](https://github.com/rootprt/BringEmNear), but it deserves its own title...
 
 ## Installation
 Copy the repo and edit main.rs to enter your API keys. When finished, run the program with cargo.
