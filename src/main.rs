@@ -15,8 +15,8 @@ use std::{
     },
 };
 
-const IP_API: &str = "a9dc2f6439e77f";
-const SNUS_API: &str = "sbxsawrmhx0xa61yf4wbvr1y5of70h";
+const IP_API: &str = "<IpInfo API Key>";
+const SNUS_API: &str = "<Snusbase API Key>";
 const SNUS_URL: &str = "https://api.snusbase.com/data/search";
 const HASH_URL: &str = "https://api.snusbase.com/tools/hash-lookup";
 
