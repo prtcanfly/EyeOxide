@@ -6,12 +6,16 @@ The fast and reliable successor to [BringEmNear](https://github.com/rootprt/Brin
 ![EyeOxide](eyox.gif)
 
 ## Installation
-Copy the repo and edit main.rs to enter your API keys. When finished, run the program with cargo.
+Copy the repo and edit enums.rs to enter your API keys. When finished, run the program with cargo.
 ```
 git clone https://github.com/rootprt/EyeOxide.git
 cd EyeOxide
 $editor src/enums.rs
-cargo run
+```
+Then, give permissions to install.sh, and run it.
+```
+chmod +x install.sh
+./install.sh
 ```
 
 ## Usage
