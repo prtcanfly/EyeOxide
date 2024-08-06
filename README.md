@@ -3,7 +3,7 @@ A compilation of tools to help perform OSINT investigations.
 
 The fast and reliable successor to [BringEmNear](https://github.com/rootprt/BringEmNear). Looking to add more functionality over time.
 
-![EyeOxide](eyox.gif)
+![EyeOxide](preview.gif)
 
 ## Installation
 Copy the repo and edit enums.rs to enter your API keys.
