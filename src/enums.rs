@@ -1,16 +1,16 @@
+use colorful::core::StrMarker;
 use ipinfo::{IpInfo, IpInfoConfig};
+use dotenvy::dotenv;
 use reqwest::blocking::Client;
 use serde_json::{json, to_string_pretty, Value};
 use std::{
+    env,
     error::Error,
     io::{self, Write},
     process::exit,
     str::FromStr,
 };
 
-// change the API keys
-const IP_API: &str = "<IpInfo API Key>";
-const SNUS_API: &str = "<Snusbase API Key>";
 const SNUS_URL: &str = "https://api.snusbase.com/data/search";
 const HASH_URL: &str = "https://api.snusbase.com/tools/hash-lookup";
 
@@ -50,9 +50,13 @@ impl Tools {
 
     // takes client, url, and body as input, prints a parsed json output, returns ()
     fn print_json(c: Client, u: &str, b: Value) -> Result<(), Box<dyn Error>> {
+        dotenv().expect(".env not found");
+
+        let snus_api = env::var("SNUS_API").expect("No API key found.").to_str();
+
         let res = c
             .post(u)
-            .header("Auth", SNUS_API)
+            .header("Auth", snus_api)
             .header("Content-Type", "application/json")
             .json(&b)
             .send()?;
@@ -109,8 +113,12 @@ impl Commands {
     // search for an ip on ipinfo.io
     #[tokio::main]
     async fn ip_info() {
+        dotenv().expect(".env not found");
+
+        let ip_api = env::var("IP_API").expect("No API key found.").to_str();
+
         let config = IpInfoConfig {
-            token: Some(IP_API.to_string()),
+            token: Some(ip_api.to_string()),
             ..Default::default()
         };
 

@@ -25,6 +25,6 @@ fn main() {
     print!("{}", ey_ox.gradient(Color::Red));
     print!("\n{}", creds.gradient(Color::Red3a));
     println!("");
-    
+
     enums::Tools::cli();
 }
