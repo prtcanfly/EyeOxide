@@ -11,8 +11,7 @@ MM  MMMMMMMM 88.  .88 88.  ... M. `MMM' .M  .d88b.  88 88.  .88 88.  ...
 MM        .M `8888P88 `88888P' MMb     dMM dP'  `dP dP `88888P8 `88888P' 
 MMMMMMMMMMMM      .88          MMMMMMMMMMM                               
               d8888P                                                     
-"#
-    .red();
+"#.red();
 
     print!("{}", ey_ox);
     enums::Tools::cli();
