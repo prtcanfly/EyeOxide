@@ -1,4 +1,4 @@
 #!/bin/bash
 
 cargo make
-mv ./target/debug/EyeOxide ~/.cargo/bin/eyox 
+cp ./target/debug/EyeOxide ~/.cargo/bin/eyox

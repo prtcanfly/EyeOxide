@@ -1,6 +1,6 @@
 use colorful::core::StrMarker;
-use ipinfo::{IpInfo, IpInfoConfig};
 use dotenvy::dotenv;
+use ipinfo::{IpInfo, IpInfoConfig};
 use reqwest::blocking::Client;
 use serde_json::{json, to_string_pretty, Value};
 use std::{
