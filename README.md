@@ -15,25 +15,25 @@ cargo run
 ## Usage
 #### The current commands are as follows:
 
-##### Ip
+#### Ip
 ```
 ip 
 ```
 asks for an Ip address, and prints the corresponding IpInfo data
 
-##### Snus
+#### Snus
 ```
 snus
 ```
 searches snusbase databases using a search type and a search term
 
-##### User
+#### User
 ```
 user
 ```
 searches for social media accounts using a username
 
-##### Hash
+#### Hash
 ```
 hash 
 ```
