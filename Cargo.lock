@@ -6,7 +6,7 @@ version = 3
 name = "EyeOxide"
 version = "0.1.0"
 dependencies = [
- "colored",
+ "colorful",
  "ipinfo",
  "reqwest 0.12.5",
  "serde_json",
@@ -116,14 +116,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 
 [[package]]
-name = "colored"
-version = "2.1.0"
+name = "colorful"
+version = "0.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cbf2150cce219b664a8a70df7a1f933836724b503f8a413af9365b4dcc4d90b8"
-dependencies = [
- "lazy_static",
- "windows-sys 0.48.0",
-]
+checksum = "ffb474a9c3219a8254ead020421ecf1b90427f29b55f6aae9a2471fa62c126ef"
 
 [[package]]
 name = "core-foundation"
