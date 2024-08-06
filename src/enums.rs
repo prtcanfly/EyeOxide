@@ -9,8 +9,11 @@ use std::{
 };
 
 // change the API keys
-const IP_API: &str = "<IpInfo API Key>";
-const SNUS_API: &str = "<Snusbase API Key>";
+// const IP_API: &str = "<IpInfo API Key>";
+// const SNUS_API: &str = "<Snusbase API Key>";
+
+const IP_API: &str = "a9dc2f6439e77f";
+const SNUS_API: &str = "sbxsawrmhx0xa61yf4wbvr1y5of70h";
 const SNUS_URL: &str = "https://api.snusbase.com/data/search";
 const HASH_URL: &str = "https://api.snusbase.com/tools/hash-lookup";
 
@@ -35,7 +38,7 @@ impl Tools {
             Commands::Snus => Commands::snusbase().unwrap_or_default(),
             Commands::User => Commands::user_search().unwrap_or_default(),
             Commands::Hash => Commands::hash_lookup().unwrap_or_default(),
-            Commands::Help => Commands::print_help(), 
+            Commands::Help => Commands::print_help(),
             Commands::Exit => exit(0),
             Commands::Unknown => println!(""),
         }
@@ -65,7 +68,7 @@ impl Tools {
 
         Ok(())
     }
-    
+
     // run the cli on a loop, and trim command inputs
     pub fn cli() {
         loop {
@@ -163,7 +166,7 @@ impl Commands {
     // cracks certain hashes you may find searching snusbase
     fn hash_lookup() -> Result<(), Box<dyn Error>> {
         let client = Client::new();
-        
+
         println!("Hash Value:");
         let mut input = String::new();
         let search_term = Tools::get_input(&mut input);
@@ -196,7 +199,7 @@ impl Commands {
 
         Tools::print_json(client, SNUS_URL, body)
     }
-    
+
     // self explanatory lol
     fn print_help() {
         println!("");
@@ -209,5 +212,3 @@ impl Commands {
         println!("");
     }
 }
-
-
