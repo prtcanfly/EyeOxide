@@ -12,7 +12,7 @@ git clone https://github.com/rootprt/EyeOxide.git
 cd EyeOxide
 $editor src/enums.rs
 ```
-When finished entering your API keys
+When finished entering your API keys, run the program with cargo
 ```
 cargo run
 ```
