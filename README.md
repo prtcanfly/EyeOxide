@@ -8,7 +8,7 @@ Copy the repo and edit main.rs to enter your API keys. When finished, run the pr
 ```
 git clone https://github.com/rootprt/EyeOxide.git
 cd EyeOxide
-$editor src/main.rs
+$editor src/enums.rs
 cargo run
 ```
 
@@ -26,6 +26,12 @@ asks for an Ip address, and prints the corresponding IpInfo data
 snus
 ```
 searches snusbase databases using a search type and a search term
+
+##### User
+```
+user
+```
+searches for social media accounts using a username
 
 ##### Hash
 ```
