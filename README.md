@@ -6,22 +6,35 @@ The fast and reliable successor to [BringEmNear](https://github.com/rootprt/Brin
 ![EyeOxide](preview.gif)
 
 ## Installation
-1.  Copy the repo and run the installer script:
+1.  Copy the repo and cd into the directory:
     
     > ```
     > git clone https://github.com/rootprt/EyeOxide.git
     >  
     > cd EyeOxide
-    >  
-    > chmod +x install.sh
-    > ./install.sh
+    > ``` 
+    
+2.  Set your API keys as environment variables:
+
+    ### Easy Way (.env)
+    Add your keys to a .env file for easy access.
+
+    > 
+    > Make and open an .env file in EyeOxide's main folder:  
     > ```
-    > Then, to run EyeOxide:
+    > $editor .env
     > ```
-    > eyox
+    > 
+    > In your .env file, add the following lines, replacing api_keys as necessary:
+    > ```
+    > SNUS_API=snusbase_api_key
+    > IP_API=ipinfo_api_key
     > ```
 
-2.  Set your API keys as environment variables using your shell:
+    ### Alternate Way (global variables)
+    Set your API keys as global environment variables using your shell. 
+
+    This has proven to be a bit problematic on my end, but you may prefer it.
 
     <details>
     <summary>Bash</summary>
