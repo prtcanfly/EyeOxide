@@ -1,5 +1,4 @@
 use colorful::core::StrMarker;
-use dotenvy::dotenv;
 use ipinfo::{IpInfo, IpInfoConfig};
 use reqwest::blocking::Client;
 use serde_json::{json, to_string_pretty, Value};
@@ -50,8 +49,6 @@ impl Tools {
 
     // takes client, url, and body as input, prints a parsed json output, returns ()
     fn print_json(c: Client, u: &str, b: Value) -> Result<(), Box<dyn Error>> {
-        dotenv().expect(".env not found");
-
         let snus_api = env::var("SNUS_API").expect("No API key found.").to_str();
 
         let res = c
@@ -113,8 +110,6 @@ impl Commands {
     // search for an ip on ipinfo.io
     #[tokio::main]
     async fn ip_info() {
-        dotenv().expect(".env not found");
-
         let ip_api = env::var("IP_API").expect("No API key found.").to_str();
 
         let config = IpInfoConfig {

@@ -6,56 +6,91 @@ The fast and reliable successor to [BringEmNear](https://github.com/rootprt/Brin
 ![EyeOxide](preview.gif)
 
 ## Installation
-Copy the repo and add your API keys to a .env file:
-```
-git clone https://github.com/rootprt/EyeOxide.git
-cd EyeOxide
-$editor .env
-```
-Enter your keys in this format, with no quotations:
-```
-SNUS_API=api_key
-IP_API=api_key
-```
-When finished, run the program with cargo:
-```
-cargo run
-```
+1.  Copy the repo and run the installer script:
+    
+    ```
+    git clone https://github.com/rootprt/EyeOxide.git
 
-## Alternative Installation
-Run install.sh to add the program to your ~/.cargo/bin.
-```
-chmod +x install.sh
-./install.sh
-```
-Then, to run EyeOxide:
-```
-eyox
-```
+    cd EyeOxide
 
-## Usage
-#### The current commands are as follows:
+    chmod +x install.sh
+    ./install.sh
+    ```
+    Then, to run EyeOxide:
+    ```
+    eyox
+    ```
+
+2.  Set your API keys as environment variables using your shell:
+
+    <details>
+    <summary>Bash</summary>
+
+    ```
+    $editor ~/.bashrc
+    ```
+    
+    In your config file, add the following lines, replacing api_keys as necessary:
+    ```sh
+    export SNUS_API="snusbase_api_key"
+    export IP_API="ipinfo_api_key"
+    ```
+    </details>
+
+    <details>
+    <summary>Zsh</summary>
+
+    ```
+    $editor ~/.zshrc
+    ```
+    
+    In your config file, add the following lines, replacing api_keys as necessary:
+    ```sh
+    export SNUS_API="snusbase_api_key"
+    export IP_API="ipinfo_api_key"
+    ```
+    </details>
+
+    <details>
+    <summary>Fish</summary>
+
+    ```
+    $editor ~/.config/fish/config.fish
+    ```
+    
+    In your config file, add the following lines, replacing api_keys as necessary:
+    ```sh
+    set -x SNUS_API 'snusbase_api_key' 
+    set -x IP_API 'ipinfo_api_key'
+    ```
+    </details>
+
+## Commands
+All of these commands can be viewed easily by typing:
+```
+help
+```
 
 #### Ip
+Asks for an Ip address, and prints the corresponding IpInfo data:
 ```
 ip 
 ```
-asks for an Ip address, and prints the corresponding IpInfo data
 
 #### Snus
+Searches snusbase databases using a search type and a search term:
 ```
 snus
 ```
-searches snusbase databases using a search type and a search term
 
 #### User
+Searches for social media accounts using a username:
 ```
 user
 ```
-searches for social media accounts using a username
 
 #### Hash
+Similar to snus, it searches snusbase for cracked passwords using their corresponding hashes:
 ```
 hash 
 ```
-similar to snus, it searches snusbase for cracked passwords using their corresponding hashes, can save the headache of dehashing them yourself
