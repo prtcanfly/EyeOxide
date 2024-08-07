@@ -8,61 +8,63 @@ The fast and reliable successor to [BringEmNear](https://github.com/rootprt/Brin
 ## Installation
 1.  Copy the repo and run the installer script:
     
-    ```
-    git clone https://github.com/rootprt/EyeOxide.git
-
-    cd EyeOxide
-
-    chmod +x install.sh
-    ./install.sh
-    ```
-    Then, to run EyeOxide:
-    ```
-    eyox
-    ```
+    > ```
+    > git clone https://github.com/rootprt/EyeOxide.git
+    >  
+    > cd EyeOxide
+    >  
+    > chmod +x install.sh
+    > ./install.sh
+    > ```
+    > Then, to run EyeOxide:
+    > ```
+    > eyox
+    > ```
 
 2.  Set your API keys as environment variables using your shell:
 
     <details>
     <summary>Bash</summary>
-
-    ```
-    $editor ~/.bashrc
-    ```
     
-    In your config file, add the following lines, replacing api_keys as necessary:
-    ```sh
-    export SNUS_API="snusbase_api_key"
-    export IP_API="ipinfo_api_key"
-    ```
+    > ```
+    > $editor ~/.bashrc
+    > ```
+    >  
+    > In your config file, add the following lines, replacing api_keys as necessary:
+    > ```sh
+    > export SNUS_API="snusbase_api_key"
+    > export IP_API="ipinfo_api_key"
+    > ```
+    
     </details>
-
+     
     <details>
     <summary>Zsh</summary>
-
-    ```
-    $editor ~/.zshrc
-    ```
     
-    In your config file, add the following lines, replacing api_keys as necessary:
-    ```sh
-    export SNUS_API="snusbase_api_key"
-    export IP_API="ipinfo_api_key"
-    ```
-    </details>
-
-    <details>
-    <summary>Fish</summary>
-
-    ```
-    $editor ~/.config/fish/config.fish
-    ```
+    > ```
+    > $editor ~/.zshrc
+    > ```
+    >  
+    > In your config file, add the following lines, replacing api_keys as necessary:
+    > ```sh
+    > export SNUS_API="snusbase_api_key"
+    > export IP_API="ipinfo_api_key"
+    > ```
+    > </details>
+    >  
+    > <details>
+    > <summary>Fish</summary>
+    >  
+    > ```
+    > $editor ~/.config/fish/config.fish
+    > ```
+    >  
+    > In your config file, add the following lines, replacing api_keys as necessary:
+    > ```sh
+    > set -x SNUS_API 'snusbase_api_key' 
+    > set -x IP_API 'ipinfo_api_key'
+    > ```
     
-    In your config file, add the following lines, replacing api_keys as necessary:
-    ```sh
-    set -x SNUS_API 'snusbase_api_key' 
-    set -x IP_API 'ipinfo_api_key'
-    ```
     </details>
 
 ## Commands
