@@ -25,7 +25,8 @@ The fast and reliable successor to [BringEmNear](https://github.com/rootprt/Brin
 
     <details>
     <summary>Bash</summary>
-    
+   
+    >    
     > ```
     > $editor ~/.bashrc
     > ```
@@ -40,7 +41,8 @@ The fast and reliable successor to [BringEmNear](https://github.com/rootprt/Brin
      
     <details>
     <summary>Zsh</summary>
-    
+   
+    > 
     > ```
     > $editor ~/.zshrc
     > ```
@@ -50,11 +52,13 @@ The fast and reliable successor to [BringEmNear](https://github.com/rootprt/Brin
     > export SNUS_API="snusbase_api_key"
     > export IP_API="ipinfo_api_key"
     > ```
-    > </details>
-    >  
-    > <details>
-    > <summary>Fish</summary>
-    >  
+    
+    </details>
+    
+    <details>
+    <summary>Fish</summary>
+      
+    > 
     > ```
     > $editor ~/.config/fish/config.fish
     > ```
