@@ -14,8 +14,10 @@ use std::{
 const SNUS_URL: &str = "https://api.snusbase.com/data/search";
 const HASH_URL: &str = "https://api.snusbase.com/tools/hash-lookup";
 
+#[derive(Debug)]
 pub enum Tools {}
 
+#[derive(Debug)]
 enum Commands {
     Ip,
     Snus,
