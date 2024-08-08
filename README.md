@@ -8,7 +8,7 @@ The fast and reliable successor to [BringEmNear](https://github.com/rootprt/Brin
 ## Installation
 1.  Copy the repo and cd into the directory:
     
-    > ```
+    > ```sh
     > git clone https://github.com/rootprt/EyeOxide.git
     >  
     > cd EyeOxide
@@ -17,73 +17,26 @@ The fast and reliable successor to [BringEmNear](https://github.com/rootprt/Brin
 2.  Set your API keys as environment variables:
 
     ### Easy Way (.env)
-    Add your keys to a .env file for easy access.
+    Add your keys to a .env file for easy access, and then run the install script.
 
-    > 
     > Make and open an .env file in EyeOxide's main folder:  
-    > ```
+    > ```sh
     > $editor .env
     > ```
     > 
     > In your .env file, add the following lines, replacing api_keys as necessary:
-    > ```
+    > ```sh
     > SNUS_API=snusbase_api_key
     > IP_API=ipinfo_api_key
     > ```
-
-    ### Alternate Way (global variables)
-    Set your API keys as global environment variables using your shell. 
-
-    This has proven to be a bit problematic on my end, but you may prefer it.
-
-    <details>
-    <summary>Bash</summary>
-   
-    >    
-    > ```
-    > $editor ~/.bashrc
-    > ```
-    >  
-    > In your config file, add the following lines, replacing api_keys as necessary:
-    > ```sh
-    > export SNUS_API="snusbase_api_key"
-    > export IP_API="ipinfo_api_key"
-    > ```
-    
-    </details>
-     
-    <details>
-    <summary>Zsh</summary>
-   
     > 
-    > ```
-    > $editor ~/.zshrc
-    > ```
-    >  
-    > In your config file, add the following lines, replacing api_keys as necessary:
+    > Run the install script:
     > ```sh
-    > export SNUS_API="snusbase_api_key"
-    > export IP_API="ipinfo_api_key"
-    > ```
-    
-    </details>
-    
-    <details>
-    <summary>Fish</summary>
-      
+    > chmod +x install.sh
     > 
-    > ```
-    > $editor ~/.config/fish/config.fish
-    > ```
-    >  
-    > In your config file, add the following lines, replacing api_keys as necessary:
-    > ```sh
-    > set -x SNUS_API 'snusbase_api_key' 
-    > set -x IP_API 'ipinfo_api_key'
+    > ./install.sh
     > ```
     
-    </details>
-
 ## Commands
 All of these commands can be viewed easily by typing:
 ```

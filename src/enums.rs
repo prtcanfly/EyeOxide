@@ -51,7 +51,7 @@ impl Tools {
     // takes client, url, and body as input, prints a parsed json output, returns ()
     fn print_json(c: Client, u: &str, b: Value) -> Result<(), Box<dyn Error>> {
         dotenv().expect("Not Found");
-        
+
         let snus_api = env::var("SNUS_API").expect("No API key found.").to_str();
 
         let res = c
@@ -114,7 +114,7 @@ impl Commands {
     #[tokio::main]
     async fn ip_info() {
         dotenv().expect("Not Found");
-        
+
         let ip_api = env::var("IP_API").expect("No API key found.").to_str();
 
         let config = IpInfoConfig {
@@ -209,7 +209,7 @@ impl Commands {
     fn print_help() {
         println!("");
         println!("Commands:");
-        println!("   ip - Fetch data about an ip using IpInfo.");
+        println!("   ip   - Fetch data about an ip using IpInfo.");
         println!("   snus - Search Snusbase databases for leaked info using a type and a term.");
         println!("   user - Search social media sites for accounts that use a specific username.");
         println!("   hash - Check Snusbase for cracked passwords using password hashes.");
