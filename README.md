@@ -14,10 +14,7 @@ The fast and reliable successor to [BringEmNear](https://github.com/rootprt/Brin
     > cd EyeOxide
     > ``` 
     
-2.  Set your API keys as environment variables:
-
-    ### Easy Way (.env)
-    Add your keys to a .env file for easy access, and then run the install script.
+2.  Add your API keys, and then run the install script.
 
     > Make and open an .env file in EyeOxide's main folder:  
     > ```sh
