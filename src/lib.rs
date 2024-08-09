@@ -1,3 +1,4 @@
+use chrono::Local;
 use dotenvy::dotenv;
 use ipinfo::{IpInfo, IpInfoConfig};
 use pwned::api::*;
@@ -6,7 +7,7 @@ use serde_json::{json, to_string_pretty, Value};
 use std::{
     env,
     error::Error,
-    fs::File,
+    fs::{File, OpenOptions},
     io::{self, Write},
     process::exit,
     str::FromStr,
@@ -16,14 +17,21 @@ const SNUS_URL: &str = "https://api.snusbase.com/data/search";
 const HASH_URL: &str = "https://api.snusbase.com/tools/hash-lookup";
 
 #[derive(Debug)]
+struct DateTime {
+    local: String,
+}
+
+#[derive(Debug)]
 pub enum Tools {}
 
 #[derive(Debug)]
 enum Commands {
     Ip,
+    IpWrite,
     Snus,
     SnusWrite,
     User,
+    UserWrite,
     HaveIBeenPwned,
     Hash,
     Help,
@@ -38,9 +46,11 @@ impl FromStr for Commands {
     fn from_str(input: &str) -> Result<Commands, Self::Err> {
         match input {
             "ip" => Ok(Commands::Ip),
+            "ip -w" => Ok(Commands::IpWrite),
             "snus" => Ok(Commands::Snus),
             "snus -w" | "snus --write" => Ok(Commands::SnusWrite),
             "user" => Ok(Commands::User),
+            "user -w" => Ok(Commands::UserWrite),
             "hibp" => Ok(Commands::HaveIBeenPwned),
             "hash" => Ok(Commands::Hash),
             "help" => Ok(Commands::Help),
@@ -58,16 +68,27 @@ impl Tools {
         let write_to_file = true;
 
         match command {
-            Commands::Ip => Tools::ip_info(),
+            Commands::Ip => Tools::ip_info(dont_write).unwrap_or_default(),
+            Commands::IpWrite => Tools::ip_info(write_to_file).unwrap_or_default(),
             Commands::Snus => Tools::snusbase(dont_write).unwrap_or_default(),
             Commands::SnusWrite => Tools::snusbase(write_to_file).unwrap_or_default(),
-            Commands::User => Tools::user_search().unwrap_or_default(),
+            Commands::User => Tools::user_search(dont_write).unwrap_or_default(),
+            Commands::UserWrite => Tools::user_search(write_to_file).unwrap_or_default(),
             Commands::HaveIBeenPwned => Tools::have_i_been_pwned(),
             Commands::Hash => Tools::hash_lookup().unwrap_or_default(),
             Commands::Help => Tools::print_help(),
             Commands::Exit => exit(0),
             Commands::Unknown => println!(""),
         }
+    }
+
+    // definitely doesnt need to be a struct, but i wanted to make a struct
+    fn date_time() -> String {
+        let time = DateTime {
+            local: Local::now().format("%Y-%m-%d_%H-%M-%S").to_string(),
+        };
+
+        time.local
     }
 
     // user input function
@@ -93,9 +114,11 @@ impl Tools {
         let json_default: Value = serde_json::from_str(&res_txt)?;
         let pretty_json = to_string_pretty(&json_default)?;
 
+        // decides whether to print the json or write it to a txt file
         if o {
-            File::create("output.txt")?.write_all(pretty_json.as_bytes())?;
-            println!("Written to output.txt");
+            File::create(format!("logs/snusbase_{}.txt", Tools::date_time()))?
+                .write_all(pretty_json.as_bytes())?;
+            println!("File Written. Check logs folder.");
         } else {
             println!("{}", pretty_json);
         }
@@ -104,7 +127,7 @@ impl Tools {
 
     // search for an ip on ipinfo.io
     #[tokio::main]
-    async fn ip_info() {
+    async fn ip_info(o: bool) -> Result<(), Box<dyn Error>> {
         dotenv().expect(".env File Not Found");
 
         let ip_api = env::var("IP_API").expect("No API key found.");
@@ -121,13 +144,30 @@ impl Tools {
         let ip = Tools::get_input(&mut input);
 
         let res = ipinfo.lookup(ip).await;
-        match res {
-            Ok(r) => {
-                let json = to_string_pretty(&r).unwrap();
-                println!("{}", json);
+
+        // i know this looks messy, but it works
+        // decides whether to print the json or write it to a txt file
+        if o {
+            match res {
+                Ok(r) => {
+                    let json = to_string_pretty(&r).unwrap();
+                    File::create(format!("logs/ip_info_{}.txt", Tools::date_time()))?
+                        .write_all(json.as_bytes())?;
+                    println!("File Written. Check logs folder.");
+                }
+                Err(e) => println!("error occured: {}", &e.to_string()),
             }
-            Err(e) => println!("error occured: {}", &e.to_string()),
+        } else {
+            match res {
+                Ok(r) => {
+                    let json = to_string_pretty(&r).unwrap();
+                    println!("{}", json);
+                }
+                Err(e) => println!("error occured: {}", &e.to_string()),
+            }
         }
+
+        Ok(())
     }
 
     // checks to see if a password is leaked through an api request to HIBP
@@ -146,7 +186,7 @@ impl Tools {
     }
 
     // similar to sherlock, finds accounts using a username
-    fn user_search() -> Result<(), Box<dyn Error>> {
+    fn user_search(o: bool) -> Result<(), Box<dyn Error>> {
         let client = Client::new();
 
         println!("Username:");
@@ -166,10 +206,24 @@ impl Tools {
             format!("https://www.tumblr.com/{}", username),
         ];
 
+        let filename = format!("logs/user_search_{}.txt", Tools::date_time());
+
         for site in &sites {
             let res = client.get(site).send()?;
             let res = res.status();
-            println!("[{}]: {}", res, site);
+
+            // decides whether to print the json or write it to a txt file
+            if o {
+                let _ = OpenOptions::new()
+                    .append(true)
+                    .create(true)
+                    .open(filename.clone())?
+                    .write_all(format!("[{}]: {}\n", res, site).as_bytes());
+
+                println!("File Written. Check logs folder.");
+            } else {
+                println!("[{}]: {}", res, site);
+            }
         }
 
         Ok(())

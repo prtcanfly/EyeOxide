@@ -1,3 +1,4 @@
 /target
+/logs
 .env
-output.txt
+notes.md
