@@ -73,7 +73,7 @@ impl Tools {
         s.trim()
     }
 
-    // takes client, url, and body as input, prints a parsed json output, returns ()
+    // takes client, url, body, and write option as input, prints a parsed json output, returns ()
     fn print_json(c: Client, u: &str, b: Value, o: bool) -> Result<(), Box<dyn Error>> {
         dotenv().expect("Not Found");
 
@@ -197,6 +197,7 @@ impl Commands {
     }
 
     // search snusbase databases using a search_type and search_term
+    // passes "o" through to print_json to determine whether or not to write to a file
     fn snusbase(o: bool) -> Result<(), Box<dyn Error>> {
         let client = Client::new();
 
