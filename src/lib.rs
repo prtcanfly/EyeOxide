@@ -221,13 +221,10 @@ impl Commands {
     // self explanatory lol
     fn print_help() {
         println!("");
-        println!("Commands:");
+        println!("Commands:\n");
         println!("   ip   | Fetch data about an ip using IpInfo.\n");
-        println!("   snus | Search Snusbase databases for leaked info using a type and a term.");
-        println!("      snus [-w/--write] | Writes the output to a text file.\n");
-        println!(
-            "   user | Search social media sites for accounts that use a specific username.\n"
-        );
+        println!("   snus | Search Snusbase databases for leaked info using a type and a term.\n");
+        println!("   user | Search social media sites for accounts that use a username.\n");
         println!("   hash | Check Snusbase for cracked passwords using password hashes.");
         println!("");
     }
