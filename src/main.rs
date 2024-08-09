@@ -1,6 +1,5 @@
-mod enums;
-
 use colorful::{Color, Colorful};
+use eye_oxide::Tools;
 
 fn main() {
     let ey_ox = format!(
@@ -26,5 +25,5 @@ fn main() {
     print!("\n{}", creds.gradient(Color::Red3a));
     println!("");
 
-    enums::Tools::cli();
+    Tools::cli();
 }

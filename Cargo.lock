@@ -3,19 +3,6 @@
 version = 3
 
 [[package]]
-name = "EyeOxide"
-version = "0.1.0"
-dependencies = [
- "colorful",
- "dotenvy",
- "ipinfo",
- "reqwest 0.12.5",
- "serde_json",
- "thiserror",
- "tokio",
-]
-
-[[package]]
 name = "addr2line"
 version = "0.22.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -168,6 +155,19 @@ checksum = "534c5cf6194dfab3db3242765c03bbe257cf92f22b38f6bc0c58d59108a820ba"
 dependencies = [
  "libc",
  "windows-sys 0.52.0",
+]
+
+[[package]]
+name = "eye_oxide"
+version = "0.1.0"
+dependencies = [
+ "colorful",
+ "dotenvy",
+ "ipinfo",
+ "reqwest 0.12.5",
+ "serde_json",
+ "thiserror",
+ "tokio",
 ]
 
 [[package]]

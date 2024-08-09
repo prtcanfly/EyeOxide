@@ -1,4 +1,3 @@
-use colorful::core::StrMarker;
 use dotenvy::dotenv;
 use ipinfo::{IpInfo, IpInfoConfig};
 use reqwest::blocking::Client;
@@ -6,6 +5,7 @@ use serde_json::{json, to_string_pretty, Value};
 use std::{
     env,
     error::Error,
+    fs::File,
     io::{self, Write},
     process::exit,
     str::FromStr,
@@ -21,6 +21,7 @@ pub enum Tools {}
 enum Commands {
     Ip,
     Snus,
+    SnusWrite,
     User,
     Hash,
     Help,
@@ -28,13 +29,35 @@ enum Commands {
     Unknown,
 }
 
+// match string inputs to their corresponding Commands
+impl FromStr for Commands {
+    type Err = ();
+
+    fn from_str(input: &str) -> Result<Commands, Self::Err> {
+        match input {
+            "ip" => Ok(Commands::Ip),
+            "snus" => Ok(Commands::Snus),
+            "snus -w" | "snus --write" => Ok(Commands::SnusWrite),
+            "user" => Ok(Commands::User),
+            "hash" => Ok(Commands::Hash),
+            "help" => Ok(Commands::Help),
+            "exit" => Ok(Commands::Exit),
+            _ => Ok(Commands::Unknown),
+        }
+    }
+}
+
 // functions for manipulating data
 impl Tools {
     // match each Command to its assigned function
     fn handle_command(command: Commands) {
+        let dont_write = false;
+        let write_to_file = true;
+
         match command {
             Commands::Ip => Commands::ip_info(),
-            Commands::Snus => Commands::snusbase().unwrap_or_default(),
+            Commands::Snus => Commands::snusbase(dont_write).unwrap_or_default(),
+            Commands::SnusWrite => Commands::snusbase(write_to_file).unwrap_or_default(),
             Commands::User => Commands::user_search().unwrap_or_default(),
             Commands::Hash => Commands::hash_lookup().unwrap_or_default(),
             Commands::Help => Commands::print_help(),
@@ -51,10 +74,10 @@ impl Tools {
     }
 
     // takes client, url, and body as input, prints a parsed json output, returns ()
-    fn print_json(c: Client, u: &str, b: Value) -> Result<(), Box<dyn Error>> {
+    fn print_json(c: Client, u: &str, b: Value, o: bool) -> Result<(), Box<dyn Error>> {
         dotenv().expect("Not Found");
 
-        let snus_api = env::var("SNUS_API").expect("No API key found.").to_str();
+        let snus_api = env::var("SNUS_API").expect("No API key found.");
 
         let res = c
             .post(u)
@@ -67,8 +90,12 @@ impl Tools {
         let json_default: Value = serde_json::from_str(&res_txt)?;
         let pretty_json = to_string_pretty(&json_default)?;
 
-        println!("{}", pretty_json);
-
+        if o {
+            File::create("output.txt")?.write_all(pretty_json.as_bytes())?;
+            println!("Written to output.txt");
+        } else {
+            println!("{}", pretty_json);
+        }
         Ok(())
     }
 
@@ -93,23 +120,6 @@ impl Tools {
     }
 }
 
-// match string inputs to their corresponding Commands
-impl FromStr for Commands {
-    type Err = ();
-
-    fn from_str(input: &str) -> Result<Commands, Self::Err> {
-        match input {
-            "ip" => Ok(Commands::Ip),
-            "snus" => Ok(Commands::Snus),
-            "user" => Ok(Commands::User),
-            "hash" => Ok(Commands::Hash),
-            "help" => Ok(Commands::Help),
-            "exit" => Ok(Commands::Exit),
-            _ => Ok(Commands::Unknown),
-        }
-    }
-}
-
 // create the functions each Command will call
 impl Commands {
     // search for an ip on ipinfo.io
@@ -117,7 +127,7 @@ impl Commands {
     async fn ip_info() {
         dotenv().expect("Not Found");
 
-        let ip_api = env::var("IP_API").expect("No API key found.").to_str();
+        let ip_api = env::var("IP_API").expect("No API key found.");
 
         let config = IpInfoConfig {
             token: Some(ip_api.to_string()),
@@ -183,11 +193,11 @@ impl Commands {
             "types": ["hash"],
         });
 
-        Tools::print_json(client, HASH_URL, body)
+        Tools::print_json(client, HASH_URL, body, false)
     }
 
     // search snusbase databases using a search_type and search_term
-    fn snusbase() -> Result<(), Box<dyn Error>> {
+    fn snusbase(o: bool) -> Result<(), Box<dyn Error>> {
         let client = Client::new();
 
         println!("Type (username, email, lastip, hash, password, name):");
@@ -204,18 +214,20 @@ impl Commands {
             "wildcard": true
         });
 
-        Tools::print_json(client, SNUS_URL, body)
+        Tools::print_json(client, SNUS_URL, body, o)
     }
 
     // self explanatory lol
     fn print_help() {
         println!("");
         println!("Commands:");
-        println!("   ip   - Fetch data about an ip using IpInfo.");
-        println!("   snus - Search Snusbase databases for leaked info using a type and a term.");
-        println!("   user - Search social media sites for accounts that use a specific username.");
-        println!("   hash - Check Snusbase for cracked passwords using password hashes.");
-        println!("   help - Display this help message.");
+        println!("   ip   | Fetch data about an ip using IpInfo.\n");
+        println!("   snus | Search Snusbase databases for leaked info using a type and a term.");
+        println!("      snus [-w/--write] | Writes the output to a text file.\n");
+        println!(
+            "   user | Search social media sites for accounts that use a specific username.\n"
+        );
+        println!("   hash | Check Snusbase for cracked passwords using password hashes.");
         println!("");
     }
 }
