@@ -1,5 +1,6 @@
 use dotenvy::dotenv;
 use ipinfo::{IpInfo, IpInfoConfig};
+use pwned::api::*;
 use reqwest::blocking::Client;
 use serde_json::{json, to_string_pretty, Value};
 use std::{
@@ -23,6 +24,7 @@ enum Commands {
     Snus,
     SnusWrite,
     User,
+    HaveIBeenPwned,
     Hash,
     Help,
     Exit,
@@ -39,6 +41,7 @@ impl FromStr for Commands {
             "snus" => Ok(Commands::Snus),
             "snus -w" | "snus --write" => Ok(Commands::SnusWrite),
             "user" => Ok(Commands::User),
+            "hibp" => Ok(Commands::HaveIBeenPwned),
             "hash" => Ok(Commands::Hash),
             "help" => Ok(Commands::Help),
             "exit" => Ok(Commands::Exit),
@@ -55,12 +58,13 @@ impl Tools {
         let write_to_file = true;
 
         match command {
-            Commands::Ip => Commands::ip_info(),
-            Commands::Snus => Commands::snusbase(dont_write).unwrap_or_default(),
-            Commands::SnusWrite => Commands::snusbase(write_to_file).unwrap_or_default(),
-            Commands::User => Commands::user_search().unwrap_or_default(),
-            Commands::Hash => Commands::hash_lookup().unwrap_or_default(),
-            Commands::Help => Commands::print_help(),
+            Commands::Ip => Tools::ip_info(),
+            Commands::Snus => Tools::snusbase(dont_write).unwrap_or_default(),
+            Commands::SnusWrite => Tools::snusbase(write_to_file).unwrap_or_default(),
+            Commands::User => Tools::user_search().unwrap_or_default(),
+            Commands::HaveIBeenPwned => Tools::have_i_been_pwned(),
+            Commands::Hash => Tools::hash_lookup().unwrap_or_default(),
+            Commands::Help => Tools::print_help(),
             Commands::Exit => exit(0),
             Commands::Unknown => println!(""),
         }
@@ -69,13 +73,12 @@ impl Tools {
     // user input function
     fn get_input(s: &mut String) -> &str {
         io::stdin().read_line(s).expect("Failed to read line.");
-
         s.trim()
     }
 
     // takes client, url, body, and write option as input, prints a parsed json output, returns ()
     fn print_json(c: Client, u: &str, b: Value, o: bool) -> Result<(), Box<dyn Error>> {
-        dotenv().expect("Not Found");
+        dotenv().expect(".env File Not Found");
 
         let snus_api = env::var("SNUS_API").expect("No API key found.");
 
@@ -99,33 +102,10 @@ impl Tools {
         Ok(())
     }
 
-    // run the cli on a loop, and trim command inputs
-    pub fn cli() {
-        loop {
-            let mut input = String::new();
-            print!("-> ");
-
-            io::stdout().flush().unwrap();
-            io::stdin()
-                .read_line(&mut input)
-                .expect("Cannot read command.");
-
-            let input = input.trim().to_lowercase();
-
-            match Commands::from_str(input.as_str()) {
-                Ok(command) => Tools::handle_command(command),
-                Err(_) => println!("Failed to parse command."),
-            }
-        }
-    }
-}
-
-// create the functions each Command will call
-impl Commands {
     // search for an ip on ipinfo.io
     #[tokio::main]
     async fn ip_info() {
-        dotenv().expect("Not Found");
+        dotenv().expect(".env File Not Found");
 
         let ip_api = env::var("IP_API").expect("No API key found.");
 
@@ -147,6 +127,21 @@ impl Commands {
                 println!("{}", json);
             }
             Err(e) => println!("error occured: {}", &e.to_string()),
+        }
+    }
+
+    // checks to see if a password is leaked through an api request to HIBP
+    #[tokio::main]
+    async fn have_i_been_pwned() {
+        println!("Search For:");
+        let mut input = String::new();
+        let search_term = Tools::get_input(&mut input);
+
+        let pwned = PwnedBuilder::default().build().unwrap();
+
+        match pwned.check_password(search_term).await {
+            Ok(pwd) => println!("Pwned? {} - Occurrences {}", pwd.found, pwd.count),
+            Err(e) => println!("Error: {}", e),
         }
     }
 
@@ -224,8 +219,29 @@ impl Commands {
         println!("Commands:\n");
         println!("   ip   | Fetch data about an ip using IpInfo.\n");
         println!("   snus | Search Snusbase databases for leaked info using a type and a term.\n");
-        println!("   user | Search social media sites for accounts that use a username.\n");
+        println!("   user | Determine whether a password has been leaked using HIBP.\n");
+        println!("   hibp | Search Have I Been Pwned for breached data.\n");
         println!("   hash | Check Snusbase for cracked passwords using password hashes.");
         println!("");
+    }
+
+    // run the cli on a loop, and trim command inputs
+    pub fn cli() {
+        loop {
+            let mut input = String::new();
+            print!("-> ");
+
+            io::stdout().flush().unwrap();
+            io::stdin()
+                .read_line(&mut input)
+                .expect("Cannot read command.");
+
+            let input = input.trim().to_lowercase();
+
+            match Commands::from_str(input.as_str()) {
+                Ok(command) => Tools::handle_command(command),
+                Err(_) => println!("Failed to parse command."),
+            }
+        }
     }
 }

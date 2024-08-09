@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+pwned = { git = "https://github.com/wisespace-io/pwned-rs.git" }
 colorful = "0.3.2"
 dotenvy = "0.15.7"
 ipinfo = "3.0.0"
